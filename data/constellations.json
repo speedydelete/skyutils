@@ -1,6 +1,4 @@
 {
-    "Ursa Minor": ["Ursa Minoris", "UMi"],
-    "Cepheus": ["Cephei", "Cep"],
     "Andromeda": ["Andromedae", "And"],
     "Antlia": ["Antliae", "Ant"],
     "Apus": ["Apodis", "Aps"],
@@ -20,6 +18,7 @@
     "Carina": ["Carinae", "Car"],
     "Cassiopeia": ["Cassiopeiae", "Cas"],
     "Centaurus": ["Centauri", "Cen"],
+    "Cepheus": ["Cephei", "Cep"],
     "Cetus": ["Ceti", "Cet"],
     "Chamaeleon": ["Chamaelontis", "Cha"],
     "Circinus": ["Circini", "Cir"],
@@ -83,6 +82,7 @@
     "Triangulum Australe": ["Trianguli Australis", "TrA"],
     "Tucana": ["Tucanae", "Tuc"],
     "Ursa Major": ["Ursa Majoris", "UMa"],
+    "Ursa Minor": ["Ursa Minoris", "UMi"],
     "Vela": ["Velorum", "Vel"],
     "Virgo": ["Virginis", "Vir"],
     "Volans": ["Volantis", "Vol"],
