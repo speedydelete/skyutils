@@ -10,6 +10,10 @@
     ".": "./lib/index.js",
     "./util": "./lib/util.js"
   },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "typescript": "^5.8.3"
+  },
   "homepage": "https://github.com/speedydelete/skyutils#readme",
   "bugs": {
     "url": "https://github.com/speedydelete/skyutils/issues"
@@ -20,8 +24,5 @@
   },
   "scripts": {
     "build": "tsc"
-  },
-  "dependencies": {
-    "typescript": "^5.8.3"
   }
 }
