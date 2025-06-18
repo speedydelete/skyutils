@@ -1,5 +1,6 @@
 
-import {applyPrecession, getPrecession, B1875} from './coords.js';
+import {B1875} from './util.js';
+import {applyPrecession, getPrecession} from './coords.js';
 import DATA from '../data/constellations.json' with {type: 'json'};
 import RAW_BORDERS from '../data/constellation_borders.json' with {type: 'json'};
 
