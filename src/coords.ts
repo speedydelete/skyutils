@@ -1,5 +1,5 @@
 
-import {sin, cos, tan, asin, atan2, J2000} from './util.js';
+import {sin, cos, tan, asin, atan2, J2000_T, B1875_T} from './util.js';
 
 
 export function normalizeAngle(angle: number): number {
@@ -28,7 +28,7 @@ export function getObliquity(T: number = 0): number {
 export function equatorialToEcliptic(ra: number, dec: number, T: number = 0): [number, number] {
     let e = getObliquity(T);
     return [
-        atan2(sin(ra)*cos(e) + tan(dec)*sin(e), cos(ra)),
+        normalizeAngle(atan2(sin(ra)*cos(e) + tan(dec)*sin(e), cos(ra))),
         asin(sin(dec)*cos(e) - cos(dec)*sin(e)*sin(ra))
     ];
 }
@@ -36,25 +36,21 @@ export function equatorialToEcliptic(ra: number, dec: number, T: number = 0): [n
 export function eclipticToEquatorial(ra: number, dec: number, T: number = 0): [number, number] {
     let e = getObliquity(T);
     return [
-        atan2(sin(ra)*cos(e) - tan(dec)*sin(e), cos(ra)),
-        asin(sin(dec)*cos(e) - cos(dec)*sin(e)*sin(ra))
+        normalizeAngle(atan2(sin(ra)*cos(e) - tan(dec)*sin(e), cos(ra))),
+        asin(sin(dec)*cos(e) + cos(dec)*sin(e)*sin(ra))
     ];
 }
 
 
-export function getPrecession(jd1: number, jd2?: number): number {
-    if (jd2 === undefined) {
-        jd2 = jd1;
-        jd1 = J2000;
+export function applyPrecession(ra: number, dec: number, T1: number, T2?: number): [number, number] {
+    if (T2 === undefined) {
+        T2 = T1;
+        T1 = J2000_T;
     }
-    let prec1 = (5.028796195*jd1 + 0.00011054348*jd1**2) / 3600;
-    let prec2 = (5.028796195*jd2 + 0.00011054348*jd2**2) / 3600;
-    return prec2 - prec1;
-}
-
-export function applyPrecession(ra: number, dec: number, prec: number): [number, number] {
-    [ra, dec] = equatorialToEcliptic(ra, dec);
-    ra = normalizeAngle(ra + prec);
-    [ra, dec] = eclipticToEquatorial(ra, dec);
+    let prec1 = (5028.796195*T1 + 1.1054348*T1**2) / 3600;
+    let prec2 = (5028.796195*T2 + 1.1054348*T2**2) / 3600;
+    [ra, dec] = equatorialToEcliptic(ra, dec, T1);
+    ra = normalizeAngle(ra + prec2 - prec1);
+    [ra, dec] = eclipticToEquatorial(ra, dec, T2);
     return [ra, dec];
 }

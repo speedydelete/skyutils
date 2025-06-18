@@ -1,8 +1,9 @@
 
-import {B1875} from './util.js';
-import {applyPrecession, getPrecession} from './coords.js';
+import {B1875_T, J2000_T} from './util.js';
+import {applyPrecession} from './coords.js';
 import DATA from '../data/constellations.json' with {type: 'json'};
-import RAW_BORDERS from '../data/constellation_borders.json' with {type: 'json'};
+import _BORDERS from '../data/constellation_borders.json' with {type: 'json'};
+const BORDERS = _BORDERS as [string, number, number, number][];
 
 
 export class Constellation {
@@ -43,30 +44,30 @@ export function lookupConstellation(id: string): Constellation {
 }
 
 
-let prec = getPrecession(B1875);
-const BORDERS = (RAW_BORDERS as [string, number, number, number][]).map(x => [x[0], x[1], ...applyPrecession(x[2], x[3], prec)] as const);
-
 export function getConstellation(ra: number, dec: number): string {
-    let i = BORDERS.findIndex(x => x[3] <= dec);
-    while (i < BORDERS.length) {
-        let searchingLowest = false;
-        for (; i < BORDERS.length; i++) {
-            let [c, rau, ral] = BORDERS[i];
-            if (searchingLowest) {
-                if (ral <= ra) {
-                    if (rau >= ra) {
-                        return c;
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                if (rau >= ra) {
-                    searchingLowest = true;
+    let [ara, adec] = applyPrecession(ra, dec, B1875_T, J2000_T);
+    let mode: 'dec' | 'rau' | 'ral' = 'dec';
+    for (let i = 0; i < BORDERS.length; i++) {
+        let [c, dec, ral, rau] = BORDERS[i];
+        if (mode === 'dec') {
+            if (dec <= adec) {
+                mode = 'rau';
+            }
+        }
+        if (mode === 'rau') {
+            if (rau >= ara) {
+                mode = 'ral';
+            }
+        }
+        if (mode === 'ral') {
+            if (ral <= ara) {
+                if (rau >= ara) {
+                    return c;
+                } else {
+                    mode = 'rau';
                 }
             }
         }
     }
     throw new Error(`Failed to find constellation for right ascension ${ra}° and declination ${dec}°`);
 }
-

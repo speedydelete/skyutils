@@ -1,5 +1,5 @@
 
-import {abs, sign, sqrt, sin, cos, acos, atan2} from './util';
+import {abs, sign, sqrt, sin, cos, acos, atan2} from './util.js';
 
 
 export class Vector3 {

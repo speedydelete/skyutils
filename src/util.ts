@@ -31,19 +31,36 @@ export function parseTime(time: string): number {
     return (new Date(time)).getTime() / 1000;
 }
 
-export function toJD(time: number | Date): number {
+export function timeToJD(time: number | Date): number {
     if (time instanceof Date) {
         time = time.getTime() / 1000;
     }
     return (time / 86400) + 2440587.5;
 }
 
-export function toUnix(jd: number): number {
+export function jdToTime(jd: number): number {
     return (jd - 2440587.5) * 86400;
 }
 
+export function jdToT(jd: number): number {
+    return (jd - J2000) / 36525;
+}
+
+export function tToJD(T: number): number {
+    return (T * 36525) + J2000;
+}
+
+export function timeToT(time: number | Date): number {
+    return jdToT(timeToJD(time));
+}
+
+export function tToTime(T: number): number {
+    return jdToTime(tToJD(T));
+}
+
 export const J2000 = 2451545.0;
-export const J2000_TIME = toUnix(J2000);
+export const J2000_T = jdToT(J2000);
+export const J2000_TIME = jdToTime(J2000);
 
 export function besselianToJD(b: number): number {
     return (b - 1900) * 365.242198781 + 2415020.31352;
@@ -54,16 +71,17 @@ export function jdToBesselian(jd: number): number {
 }
 
 export const B1875 = besselianToJD(1875);
-export const B1875_TIME = toUnix(B1875);
+export const B1875_T = jdToT(B1875);
+export const B1875_TIME = jdToTime(B1875);
 
 export function getTime(): number {
     return (new Date()).getTime() / 1000;
 }
 
 export function getJD(): number {
-    return toJD(getTime());
+    return timeToJD(getTime());
 }
 
 export function getT(): number {
-    return getJD() / 36525;
+    return timeToT(getJD());
 }
