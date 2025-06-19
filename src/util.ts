@@ -25,6 +25,7 @@ export const GREEK_LETTERS: {[key: string]: string} = {'alf': 'α', 'bet': 'β',
 
 
 export function parseTime(time: string): number {
+    time = time.replaceAll(/[ _]/g, 'T');
     if (!time.includes('Z')) {
         time += 'Z';
     }

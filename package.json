@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "entry": {
     ".": "./lib/index.js",
-    "./util": "./lib/util.js"
+    "./sw": "./lib/sw/index.js"
   },
   "devDependencies": {
     "@types/node": "^24.0.3",
